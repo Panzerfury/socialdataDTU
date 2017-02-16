@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Social Data - Assignment 2</title>
+	<script type="text/javascript" src="d3/d3.min.js"></script>
+	<link href="CSS/style.css" rel="stylesheet" />
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="Scripts/cssrefresher.js"></script>
+</head>
+<body>
+	<div class="col-md-2" data-spy="affix"  id="container" style="background-color: teal;">
+		<div id="header" style="text-align:center">
+			<img src="logo.png" style="width: 170px;height: 170px;margin-bottom: 10px;" />
+			<h3>Social Data - 2016</h3>
+		</div>
+		<div id="body">
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav6">Assignment 2A:<br/>Simple SVG stuff</button>
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav7_1">Assignment 2B:<br/>One scatter plot and two datasets</button>
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav7_2">Assignment 2C:<br/>One barchart and (at least) two datasets</button>
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav8">Assignment 2D:<br/>Visualizing geodata</button>
+		</div>
+		<div id="footer">
+			<p style="font-size: 20px;margin: 0;">Developed by: <br/> <span id="name">Nicolai Dahl, s113411</span> <br/> <span id="name">Christian Andersern, s113990</span>
+		</div>
+	</div>
+		
+	<div class="col-md-10" style="float: right;">
+	<!--
+		WEEK 6 {BEGIN}
+	-->
+		<div class="visualization" id="visual1">
+			<div class="header">
+				<h1>Assignment 2A: Simple SVG stuff</h1>
+			</div>
+			<div class="description">
+				<h2>Description</h2>
+				<p>The below visualization illustrates some of the functionalies of D3. The first part is displaying normal text while differentiating colors. <br/>
+				   After that, we draw a simple circle containing some attributes such as 'stroke-width' and 'stroke-color'. <br/>
+				   Finally we create the actual assignment where we should display 5 rectangles, with different attributes, going from the bottom left of the svg to the top right.
+				</p>
+			</div>
+			<div class="graph">
+				<h2>Visualization</h2>
+				<div id="center" style="text-align: center;">
+					<div id="svg1"></div>
+					<svg width="240" height="200" style="border: 1px solid black;" id="second-SVG">
+						<rect x="0" y="120" width="80" height="80" stroke="gray" opacity="1" stroke-width="2" fill="purple"/>
+						<rect x="40" y="90" width="80" height="80" stroke="gray" opacity="0.8" stroke-width="2" fill="blue"/>
+						<rect x="80" y="60" width="80" height="80" stroke="gray" opacity="0.6" stroke-width="2" fill="green"/>
+						<rect x="120" y="30" width="80" height="80" stroke="gray" opacity="0.4" stroke-width="2" fill="yellow"/>
+						<rect x="160" y="0" width="80" height="80" stroke="gray" opacity="0.2" stroke-width="2" fill="red"/>
+					</svg>
+				</div>
+			</div>
+		</div>
+	<!--
+		WEEK 6 {END}
+		
+		WEEK 7 {BEGIN}
+	-->
+		<div class="visualization" id="visual2">
+			<div class="header">
+				<h1>Assignment 2B: One scatter plot and two datasets</h1>
+			</div>
+			<div class="description">
+				<h2>Description</h2>
+				<p>We have created a scatter plot that visualize 'Prostitution' and 'Vehicle Theft' crimes count within 
+				   different San Fransisco districts.<br/>
+				   Each point in the graph correspond to a district (like labeled) with an X-value defined by that district's prostitution crime count and an
+				   Y-value corresponding to the vehicle theft crime count for that district. </br>
+				   Furthermore, the radius of a given point is given by the total amount of crimes (prostitution + vehicle theft) in that district <br/>
+				   One can change the year (2003 or 2015) you want to investigate, by clicking anywhere on the graph.
+				</p>
+				<p> <span style="font-weight: bold; font-size: 15px;">Explain in your own words why you think I want the axis to be the same for both years?</span> <br/>
+					To get a clear view of the development of the relationship between the crimes, we want the axes to be the same, so we don't distort the visual representation.
+				</p>
+			</div>
+			<div class="graph">
+				<h2>Visualization</h2>
+				<p id="dataTitle">Visualizing Year: <span id="idYear">2003</span></p>
+				<div id="scatter1"></div>
+			</div>
+		</div>
+		<div class="visualization" id="visual3">
+			<div class="header">
+				<h1>Assignment 2C: One barchart and (at least) two datasets</h1>
+			</div>
+			<div class="description">
+				<h2>Description</h2>
+				<p>We have created a histogram that investigates a specific crime by looking at what time the crime occur.<br />
+				   The data comes from San Fransiscos districts, from the year 2003 to 2016.<br/>
+				   Each bar inside our histogram has a height of the total amount of crimes (like labeled) in that crime type, which are inside a specific time interval.<br/>
+				   The specific time interval is along the X-axis and it should be interpreted as 0 correspond to the interval from 0 to 1 hour, 1 is between 1-2, ..., 23 is 23-24.<br/>
+				   To make the visualization complete, we have added a differentation in the color such that the lower the total amount of crimes, the darker the color.<br/>
+				   We have made the possibility to change between different crime types by clicking on the graph. The transistion between the different graphs is made smooth to please the eye.
+				</p>
+			</div>
+			<div class="graph">
+				<h2>Visualization</h2>
+				<p id="categoryTitle">VEHICLE THEFT</p>
+				<div id="scatter2"></div>
+			</div>
+		</div>
+	<!--
+		WEEK 7 {END}
+		
+		WEEK 8 {BEGIN}
+	-->
+		<div class="visualization" id="visual4">
+			<div class="header">
+				<h1>Assignment 2D: Visualizing geodata</h1>
+			</div>
+			<div class="description">
+				<h2>Description</h2>
+				<p>The last diagram is a K-Means clustering visualization. The K-Means algorithm is trying to find groups of data in a dataset which are close together (aka. clusters).<br/>
+				   The data we are working with here is every case of prostitution in SF in the years 2003 to 2016 (What has been recorded so far). <br/>
+				   Each cluster in the K-means, is colored so you can see the clusters as we increase the amount of clusters. <br/>
+				   We have also added the center of each cluster. The cluster-center is the center point of the circles with the black outlining. <br/>
+				   To change the amount of clusters, simply click the map, and it will cycle from 2-10.<br/>
+				   To check our python notebook look <a href="http://nbviewer.jupyter.org/urls/gist.githubusercontent.com/Panzerfury/a927acf64126d73cf0dc0b5baf6947ff/raw/dd857904ce157209ba4b44d8cb3298c9673f3777/Assignment2.ipynb" target="_blank">here</a>.<br/>
+				</p>
+			</div>
+			<div class="graph">
+				<h2>Visualization</h2>
+				<div id="outer">
+					<div id="plot1"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
+		WEEK 8 {END}
+	-->
+	
+	<script type="text/javascript" src="Scripts/week6.js"></script>
+	<script type="text/javascript" src="Scripts/week7_plot1.js"></script>
+	<script type="text/javascript" src="Scripts/week7_plot2.js"></script>
+	<script type="text/javascript" src="Scripts/week8.js"></script>
+	<script type="text/javascript">
+		$("#nav6").click(function(){ $('html, body').animate({ scrollTop: $('#visual1').offset().top }, 'slow'); });
+		$("#nav7_1").click(function(){ $('html, body').animate({ scrollTop: $('#visual2').offset().top }, 'slow'); });
+		$("#nav7_2").click(function(){ $('html, body').animate({ scrollTop: $('#visual3').offset().top }, 'slow'); });
+		$("#nav8").click(function(){ $('html, body').animate({ scrollTop: $('#visual4').offset().top }, 'slow'); });
+	</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+,CONTRIBUTINGFACTORVEHICLE1,TIME,PREDICTION
+0,Alcohol Involvement,22,QUEENS
+1,Backing Unsafely,22,BROOKLYN
+2,Drugs (Illegal),22,BROOKLYN
+3,Illness,22,MANHATTAN
+4,Oversized Vehicle,22,MANHATTAN
+5,Prescription Medication,22,MANHATTAN
+6,Traffic Control Disregarded,22,BROOKLYN
+7,Turning Improperly,22,MANHATTAN
+8,Alcohol Involvement,02,BROOKLYN
+9,Backing Unsafely,02,MANHATTAN
+10,Drugs (Illegal),02,BRONX
+11,Illness,02,MANHATTAN
+12,Oversized Vehicle,02,MANHATTAN
+13,Prescription Medication,02,MANHATTAN
+14,Traffic Control Disregarded,02,BROOKLYN
+15,Turning Improperly,02,MANHATTAN
+16,Alcohol Involvement,03,QUEENS
+17,Backing Unsafely,03,MANHATTAN
+18,Drugs (Illegal),03,BRONX
+19,Illness,03,MANHATTAN
+20,Oversized Vehicle,03,BRONX
+21,Prescription Medication,03,MANHATTAN
+22,Traffic Control Disregarded,03,BROOKLYN
+23,Turning Improperly,03,MANHATTAN
+24,Alcohol Involvement,00,QUEENS
+25,Backing Unsafely,00,MANHATTAN
+26,Drugs (Illegal),00,QUEENS
+27,Illness,00,MANHATTAN
+28,Oversized Vehicle,00,MANHATTAN
+29,Prescription Medication,00,MANHATTAN
+30,Traffic Control Disregarded,00,QUEENS
+31,Turning Improperly,00,MANHATTAN
+32,Alcohol Involvement,01,QUEENS
+33,Backing Unsafely,01,MANHATTAN
+34,Drugs (Illegal),01,MANHATTAN
+35,Illness,01,MANHATTAN
+36,Oversized Vehicle,01,MANHATTAN
+37,Prescription Medication,01,MANHATTAN
+38,Traffic Control Disregarded,01,BROOKLYN
+39,Turning Improperly,01,MANHATTAN
+40,Alcohol Involvement,06,QUEENS
+41,Backing Unsafely,06,MANHATTAN
+42,Drugs (Illegal),06,BROOKLYN
+43,Illness,06,MANHATTAN
+44,Oversized Vehicle,06,MANHATTAN
+45,Prescription Medication,06,MANHATTAN
+46,Traffic Control Disregarded,06,BROOKLYN
+47,Turning Improperly,06,MANHATTAN
+48,Alcohol Involvement,07,BROOKLYN
+49,Backing Unsafely,07,MANHATTAN
+50,Drugs (Illegal),07,BRONX
+51,Illness,07,MANHATTAN
+52,Oversized Vehicle,07,BROOKLYN
+53,Prescription Medication,07,MANHATTAN
+54,Traffic Control Disregarded,07,BROOKLYN
+55,Turning Improperly,07,MANHATTAN
+56,Alcohol Involvement,04,QUEENS
+57,Backing Unsafely,04,MANHATTAN
+58,Drugs (Illegal),04,BROOKLYN
+59,Illness,04,MANHATTAN
+60,Oversized Vehicle,04,QUEENS
+61,Prescription Medication,04,MANHATTAN
+62,Traffic Control Disregarded,04,BROOKLYN
+63,Turning Improperly,04,MANHATTAN
+64,Alcohol Involvement,23,QUEENS
+65,Backing Unsafely,23,QUEENS
+66,Drugs (Illegal),23,BROOKLYN
+67,Illness,23,MANHATTAN
+68,Oversized Vehicle,23,MANHATTAN
+69,Prescription Medication,23,MANHATTAN
+70,Traffic Control Disregarded,23,QUEENS
+71,Turning Improperly,23,MANHATTAN
+72,Alcohol Involvement,08,QUEENS
+73,Backing Unsafely,08,QUEENS
+74,Drugs (Illegal),08,QUEENS
+75,Illness,08,MANHATTAN
+76,Oversized Vehicle,08,BROOKLYN
+77,Prescription Medication,08,MANHATTAN
+78,Traffic Control Disregarded,08,BROOKLYN
+79,Turning Improperly,08,MANHATTAN
+80,Alcohol Involvement,09,BROOKLYN
+81,Backing Unsafely,09,BROOKLYN
+82,Drugs (Illegal),09,MANHATTAN
+83,Illness,09,MANHATTAN
+84,Oversized Vehicle,09,BROOKLYN
+85,Prescription Medication,09,MANHATTAN
+86,Traffic Control Disregarded,09,QUEENS
+87,Turning Improperly,09,MANHATTAN
+88,Alcohol Involvement,20,QUEENS
+89,Backing Unsafely,20,QUEENS
+90,Drugs (Illegal),20,MANHATTAN
+91,Illness,20,MANHATTAN
+92,Oversized Vehicle,20,MANHATTAN
+93,Prescription Medication,20,MANHATTAN
+94,Traffic Control Disregarded,20,BROOKLYN
+95,Turning Improperly,20,MANHATTAN
+96,Alcohol Involvement,21,BROOKLYN
+97,Backing Unsafely,21,QUEENS
+98,Drugs (Illegal),21,QUEENS
+99,Illness,21,MANHATTAN
+100,Oversized Vehicle,21,MANHATTAN
+101,Prescription Medication,21,MANHATTAN
+102,Traffic Control Disregarded,21,BROOKLYN
+103,Turning Improperly,21,MANHATTAN
+104,Alcohol Involvement,11,BROOKLYN
+105,Backing Unsafely,11,QUEENS
+106,Drugs (Illegal),11,BROOKLYN
+107,Illness,11,MANHATTAN
+108,Oversized Vehicle,11,BROOKLYN
+109,Prescription Medication,11,MANHATTAN
+110,Traffic Control Disregarded,11,BROOKLYN
+111,Turning Improperly,11,MANHATTAN
+112,Alcohol Involvement,10,QUEENS
+113,Backing Unsafely,10,MANHATTAN
+114,Drugs (Illegal),10,BRONX
+115,Illness,10,MANHATTAN
+116,Oversized Vehicle,10,BROOKLYN
+117,Prescription Medication,10,MANHATTAN
+118,Traffic Control Disregarded,10,BROOKLYN
+119,Turning Improperly,10,MANHATTAN
+120,Alcohol Involvement,13,QUEENS
+121,Backing Unsafely,13,BROOKLYN
+122,Drugs (Illegal),13,BROOKLYN
+123,Illness,13,MANHATTAN
+124,Oversized Vehicle,13,BROOKLYN
+125,Prescription Medication,13,BROOKLYN
+126,Traffic Control Disregarded,13,BROOKLYN
+127,Turning Improperly,13,MANHATTAN
+128,Alcohol Involvement,12,BROOKLYN
+129,Backing Unsafely,12,QUEENS
+130,Drugs (Illegal),12,MANHATTAN
+131,Illness,12,MANHATTAN
+132,Oversized Vehicle,12,BROOKLYN
+133,Prescription Medication,12,MANHATTAN
+134,Traffic Control Disregarded,12,BROOKLYN
+135,Turning Improperly,12,MANHATTAN
+136,Alcohol Involvement,15,QUEENS
+137,Backing Unsafely,15,QUEENS
+138,Drugs (Illegal),15,MANHATTAN
+139,Illness,15,MANHATTAN
+140,Oversized Vehicle,15,BROOKLYN
+141,Prescription Medication,15,BROOKLYN
+142,Traffic Control Disregarded,15,BROOKLYN
+143,Turning Improperly,15,MANHATTAN
+144,Alcohol Involvement,14,QUEENS
+145,Backing Unsafely,14,QUEENS
+146,Drugs (Illegal),14,MANHATTAN
+147,Illness,14,MANHATTAN
+148,Oversized Vehicle,14,BROOKLYN
+149,Prescription Medication,14,MANHATTAN
+150,Traffic Control Disregarded,14,BROOKLYN
+151,Turning Improperly,14,MANHATTAN
+152,Alcohol Involvement,17,QUEENS
+153,Backing Unsafely,17,QUEENS
+154,Drugs (Illegal),17,BRONX
+155,Illness,17,MANHATTAN
+156,Oversized Vehicle,17,MANHATTAN
+157,Prescription Medication,17,MANHATTAN
+158,Traffic Control Disregarded,17,BROOKLYN
+159,Turning Improperly,17,MANHATTAN
+160,Alcohol Involvement,16,MANHATTAN
+161,Backing Unsafely,16,QUEENS
+162,Drugs (Illegal),16,BROOKLYN
+163,Illness,16,MANHATTAN
+164,Oversized Vehicle,16,MANHATTAN
+165,Prescription Medication,16,BROOKLYN
+166,Traffic Control Disregarded,16,QUEENS
+167,Turning Improperly,16,MANHATTAN
+168,Alcohol Involvement,19,QUEENS
+169,Backing Unsafely,19,QUEENS
+170,Drugs (Illegal),19,MANHATTAN
+171,Illness,19,MANHATTAN
+172,Oversized Vehicle,19,MANHATTAN
+173,Prescription Medication,19,MANHATTAN
+174,Traffic Control Disregarded,19,QUEENS
+175,Turning Improperly,19,MANHATTAN
+176,Alcohol Involvement,18,QUEENS
+177,Backing Unsafely,18,QUEENS
+178,Drugs (Illegal),18,MANHATTAN
+179,Illness,18,MANHATTAN
+180,Oversized Vehicle,18,MANHATTAN
+181,Prescription Medication,18,MANHATTAN
+182,Traffic Control Disregarded,18,QUEENS
+183,Turning Improperly,18,MANHATTAN
+184,Alcohol Involvement,05,QUEENS
+185,Backing Unsafely,05,MANHATTAN
+186,Drugs (Illegal),05,BROOKLYN
+187,Illness,05,MANHATTAN
+188,Oversized Vehicle,05,MANHATTAN
+189,Prescription Medication,05,MANHATTAN
+190,Traffic Control Disregarded,05,BROOKLYN
+191,Turning Improperly,05,MANHATTAN

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Social Data - Project</title>
+		<script type="text/javascript" src="d3/d3.min.js"></script>
+		<script src="//d3js.org/queue.v1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<style>
+			label {
+				border: 1px solid black;
+				border-radius: 20px;
+				padding: 3px;
+				font-size: 12px;
+				font-weight: bold;
+				cursor: pointer;
+				margin-left: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="svg5"></div>
+		<script>	
+			// Creating radio buttons
+			var shapeDataKNN = ["5", "10", "30"], j = 0;  // Choose K=2 as default
+
+			// Create the shape selectors
+			var formKNN = d3.select("#svg5").append("form");
+
+			labels = formKNN.selectAll("label")
+						 .data(shapeDataKNN)
+						 .enter()
+						 .append("label")
+						 .text(function(d) {return "K-Means: " + d;})
+						 .insert("input")
+						 .attr({
+							 type: "checkbox",
+							 class: "shape",
+							 name: "KNN",
+							 onclick: function(d,i ) {return "changeN("+(d[i])+")"; }
+						 })
+						 .property("checked", function(d, i) {return i===j;});
+		
+			//Width and height
+			var width = 600;
+			var height = 600;
+			
+			// Setting color domains(intervals of values) for our map
+			var colorKNN = ["#ff0000", "#00ff00", "#0000ff"]           
+			
+			
+			//Create SVG element
+			var svg5 = d3.select("body").append("svg")
+					.attr("width", width)
+					.attr("height", height)
+					.style("margin", "10px auto")
+					.style("background-color", "#66B2FF");
+			
+			var projection = d3.geo.mercator()
+						   .center([-73.985, 40.742])
+						   .scale(20000)
+						   .translate([width/2, height/2]);
+		
+			var path = d3.geo.path().projection(projection);
+			
+			//Reading map file and data
+			queue()
+				.defer(d3.json, "Data/Project/nycZipCode.geojson")
+				.defer(d3.csv, "Data/Project/KNNData.csv")
+				.await(ready);	
+			
+			//Start of Choropleth drawing
+			function ready(error, map, data) {
+				var neighbors = 5;
+				
+				dataset = data.map(function(d) {
+					return [+d["lon"], +d["lat"], +d["color" + neighbors]];
+				});
+			
+				//Drawing Regions
+				svg5.append("g")
+				   .attr("class", "region")
+				   .selectAll("path")
+				   .data(map.features)
+				   .enter().append("path")
+				   .attr("d", path)
+				   .attr("fill", '#008000')
+				   .attr('stroke',"black")
+				   .attr('stroke-width', "2");
+				
+				//Drawing Zip Code Text
+				svg5.append("g").attr("class", "zipCodes")
+					.selectAll("text")
+					.data(map.features)
+					.enter()
+					.append("text")
+					.text(function(d) { return d.properties.postalCode; })
+					.attr("x", function(d) { return path.centroid(d)[0]; })
+					.attr("y", function(d) { return path.centroid(d)[1]; })
+					.attr("dominant-baseline", "central")
+					.attr("text-anchor", "middle")
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "3px")
+					.style("font-weight", "bold")
+					.style("cursor", "default")
+					.attr("fill", "#eee9e9");
+			
+				// Drawing K-Means Num Text
+				svg5.append("g").attr("class", "KNNText")
+					.append("text")
+					.text("KNN: 5")
+					.attr("id", "neighbors")
+					.attr("x", 100)
+					.attr("y", 120)
+					.attr("dominant-baseline", "central")
+					.attr("text-anchor", "middle")
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "28px")
+					.style("font-weight", "bold")
+					.attr("fill", "#ffe4c4");
+				
+				// Drawing Cluster Points
+				svg5.append("g")
+				   .selectAll("circle")
+				   .data(dataset)
+				   .enter()
+				   .append("circle")
+				   .attr("cx", function(d) {
+						   return projection([d[0], d[1]])[0];
+				   })
+				   .attr("cy", function(d) {
+						   return projection([d[0], d[1]])[1];
+				   })
+				   .attr("r", 2.5)
+				   .style("fill", function(d) { return colorKNN[d[2]]; })
+				   .style("opacity", "0.75");
+				
+			};
+			
+			function changeK(val) {
+								
+				d3.csv("Data/Project/kMeansData.csv", function(data) {			
+					dataset = data.map(function(d) {
+						return [+d["color" + val]];
+					});
+					
+					svg5.select("#neighbors")
+					   .text("KNN: " + val);
+					   
+					svg5.selectAll("circle")
+					   .data(dataset)
+					   .transition()
+					   .delay(750)
+					   .style("fill", function(d) { return colorKNN[d[2]]; });
+				});
+			}
+		</script>
+		<script>
+			$("input:checkbox").on('click', function() {
+			  var $box = $(this);
+			  if ($box.is(":checked")) {
+				var group = "input:checkbox[name='" + $box.attr("name") + "']"
+				$(group).prop("checked", false);
+				$box.prop("checked", true);
+			  } else {
+				$box.prop("checked", true);
+			  }
+			});
+		</script>
+	</body>
+</html>

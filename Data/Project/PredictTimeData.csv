@@ -1,0 +1,41 @@
+,CONTRIBUTINGFACTORVEHICLE1,BOROUGH,TIME_PREDICTION
+0,Alcohol Involvement,BRONX,01
+1,Backing Unsafely,BRONX,16
+2,Drugs (Illegal),BRONX,17
+3,Illness,BRONX,15
+4,Oversized Vehicle,BRONX,09
+5,Prescription Medication,BRONX,16
+6,Traffic Control Disregarded,BRONX,14
+7,Turning Improperly,BRONX,17
+8,Alcohol Involvement,BROOKLYN,04
+9,Backing Unsafely,BROOKLYN,13
+10,Drugs (Illegal),BROOKLYN,11
+11,Illness,BROOKLYN,18
+12,Oversized Vehicle,BROOKLYN,09
+13,Prescription Medication,BROOKLYN,16
+14,Traffic Control Disregarded,BROOKLYN,18
+15,Turning Improperly,BROOKLYN,16
+16,Alcohol Involvement,STATEN ISLAND,21
+17,Backing Unsafely,STATEN ISLAND,14
+18,Drugs (Illegal),STATEN ISLAND,08
+19,Illness,STATEN ISLAND,07
+20,Oversized Vehicle,STATEN ISLAND,15
+21,Prescription Medication,STATEN ISLAND,16
+22,Traffic Control Disregarded,STATEN ISLAND,18
+23,Turning Improperly,STATEN ISLAND,16
+24,Alcohol Involvement,MANHATTAN,04
+25,Backing Unsafely,MANHATTAN,10
+26,Drugs (Illegal),MANHATTAN,09
+27,Illness,MANHATTAN,16
+28,Oversized Vehicle,MANHATTAN,12
+29,Prescription Medication,MANHATTAN,17
+30,Traffic Control Disregarded,MANHATTAN,16
+31,Turning Improperly,MANHATTAN,14
+32,Alcohol Involvement,QUEENS,04
+33,Backing Unsafely,QUEENS,14
+34,Drugs (Illegal),QUEENS,08
+35,Illness,QUEENS,16
+36,Oversized Vehicle,QUEENS,09
+37,Prescription Medication,QUEENS,16
+38,Traffic Control Disregarded,QUEENS,18
+39,Turning Improperly,QUEENS,17

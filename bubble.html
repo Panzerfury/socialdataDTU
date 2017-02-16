@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    <style>
+	body {
+	  font: 10px sans-serif;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	.bar {
+	  fill: orange;
+	}
+
+	.bar:hover {
+	  fill: orangered ;
+	}
+
+	.x.axis path {
+	  display: none;
+	}
+
+	.d3-tip {
+	  line-height: 1;
+	  font-weight: bold;
+	  padding: 12px;
+	  background: rgba(0, 0, 0, 0.8);
+	  color: #fff;
+	  border-radius: 2px;
+	}
+
+	/* Creates a small triangle extender for the tooltip */
+	.d3-tip:after {
+	  box-sizing: border-box;
+	  display: inline;
+	  font-size: 10px;
+	  width: 100%;
+	  line-height: 1;
+	  color: rgba(0, 0, 0, 0.8);
+	  content: "\25BC";
+	  position: absolute;
+	  text-align: center;
+	}
+
+	/* Style northward tooltips differently */
+	.d3-tip.n:after {
+	  margin: -1px 0 0 0;
+	  top: 100%;
+	  left: 0;
+	}
+    </style>
+    <script type="text/javascript" src="d3/d3.min.js"></script>
+	<script src="Scripts/d3tip.js"></script>
+  </head>
+  <body>
+    <div id="dataset-picker">
+	<input type="button" value="Reason" class="dataset-button" onclick="datasetPicker('ReasonForBubble.csv')" />
+	<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/ReasonForBubble.csv';" />
+	<input type="button" value="Type" class="dataset-button" onclick="datasetPicker('TypeForBubble.csv')" />
+	<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/TypeForBubble.csv';" />
+	</div>
+	<div id="Borough-picker">
+		<form action="">
+		  <input type="radio" name="borough" value="0" checked onclick="boroughPicker(0)"> Bronx
+		  <input type="radio" name="borough" value="1" onclick="boroughPicker(1)"> Brooklyn
+		  <input type="radio" name="borough" value="2" onclick="boroughPicker(2)"> Staten Island
+		  <input type="radio" name="borough" value="3" onclick="boroughPicker(3)"> Manhattan
+		  <input type="radio" name="borough" value="4" onclick="boroughPicker(4)"> Queens
+		</form>
+	</div>
+    <div id="chart"></div>
+    <script type="text/javascript">	
+	
+	
+	
+	var diameter = 0,
+    color = d3.scale.category20b(); //color category
+	
+	var csvFile = "ReasonForBubble.csv"
+	
+	var count = "RCOUNT";
+	var factor = "CONTRIBUTINGFACTORVEHICLE1";
+	
+	var width = 600;
+	var height = 600;
+	
+	var tip = d3.tip()
+	  .attr('class', 'd3-tip')
+	  .offset([-10, 0])
+	  .html(function(d) {
+	   if(csvFile == "ReasonForBubble.csv"){
+		    return "<strong>Reason:</strong> " + d[factor] + "<br> <strong>Count:</strong> " + d[count];
+	   }else {
+			return "<strong>Type:</strong> " + d[factor] + "<br> <strong>Count:</strong> " + d[count];
+	   }
+		
+	})	
+
+	var bubbleLayout = d3.layout.pack();
+
+	var svg = d3.select("body")
+		.append("svg")
+		.attr("width", width)
+		.attr("height", height)
+		.attr("class", "bubbleLayout");
+		
+	svg.call(tip);
+	
+
+	
+	var datasetPicker = function(InputCsvFile){
+	
+		if(InputCsvFile == "ReasonForBubble.csv") {
+			csvFile = InputCsvFile;
+			count = "RCOUNT";
+			factor = "CONTRIBUTINGFACTORVEHICLE1";
+			diameter = 500;
+			bubbleLayout = d3.layout.pack()
+			.sort(function(a, b) {
+				return (a.value - b.value);
+			})
+			.size([diameter, diameter])
+			.padding(50);
+		} else {
+			csvFile = InputCsvFile;
+			count = "VCOUNT"
+			factor = "VEHICLETYPECODE1"
+			diameter = 400;
+			bubbleLayout = d3.layout.pack()
+			.sort(function(a, b) {console.log(a.value);
+				return (a.value - b.value);
+			})
+			.size([diameter, diameter])
+			.padding(50);
+		}
+		
+		var radios = document.getElementsByName('borough');
+		
+		for (var i = 0, length = radios.length; i < length; i++) {
+			if (radios[i].checked) {
+				boroughPicker(radios[i].value);
+				break;
+			}
+		}
+
+	};
+	
+	var boroughPicker = function(borough) {
+	
+	svg.selectAll("*").remove();	
+
+	d3.csv("Data/Project/"+csvFile,
+	function(d) {d.Count = parseFloat(d[count]); return d; },
+	function(error, data) {
+
+			 data = data.filter(function(row) {
+				return row["BID"] == borough && row[factor] != "Unspecified";
+			})
+			
+			data = data.map(function(d){ d.value = +d.Count; return d; });
+			
+			var nodes = bubbleLayout.nodes({children:data}).filter(function(d) {return !d.children; });
+			
+			var rScale = d3.scale.linear()
+                .domain([1, d3.max(data, function(d) {return d.r; })])
+                .range([15, 50]);
+			
+
+			var bubbles = svg.append("g")
+			.attr("transform", "translate(" + (width - diameter) / 2 + "," + (height - diameter) / 2 + ")")
+			.selectAll(".bubbleLayout")
+			.data(nodes)
+			.enter()
+			.append("g")
+			.attr("class", "bUnit")
+			.on('mouseover', tip.show)
+			.on('mouseout', tip.hide);
+		
+			
+			//create the bubbles
+			bubbles.append("circle")
+			.attr("r", function(d){return rScale(d.r); })
+			.attr("cx", function(d){ return d.x; })
+			.attr("cy", function(d){ return d.y; })
+			.style("fill", function(d) { return color(d.Count); });	
+			
+			
+			bubbles.append("text")
+			.attr("x", function(d){ return d.x; })
+			.attr("y", function(d){ return d.y + 5; })
+			.attr("text-anchor", "middle")
+			.text(function(d){ return d.Count; })
+			.style({
+				"fill":"white", 
+				"font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+				"font-size": "12px"
+			});			
+		
+		}); 
+	};
+	datasetPicker("ReasonForBubble.csv");
+	</script>
+  </body>
+</html>

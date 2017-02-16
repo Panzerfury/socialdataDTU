@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Social Data - Project</title>
+	<link href="CSS/styleProject.css" rel="stylesheet" />
+	<link href="CSS/bootstrap.min.css" rel="stylesheet" />
+	<script type="text/javascript" src="d3/d3.min.js"></script>
+	<script type="text/javascript" src="d3/queue.v1.min.js"></script>
+	<script type="text/javascript" src="Scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="Scripts/cssrefresher.js"></script>
+</head>
+<body>
+	<div class="col-md-2" data-spy="affix"  id="container" style="background-color: teal;">
+		<div id="header" style="text-align:center">
+			<img src="logo.png" style="width: 100%;height: auto;margin-bottom: 10px;" />
+			<h3>Social Data - 2016</h3>
+		</div>
+		<div id="body">
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav2">Introduction</button>
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav1">Incident Exploration</button>
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav3">Deep Research</button>
+			<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav4">Extra</button>
+		</div>
+		<div id="footer">
+			<p style="font-size: 20px;margin: 0;">Developed by: <br/> <span id="name">Nicolai Dahl, s113411</span> <br/> <span id="name">Christian Andersern, s113990</span>
+		</div>
+	</div>
+		
+	<div class="col-md-10" style="float: right;">
+		
+		<div class="visualization">
+			<div class="header">
+				<h1>New York City - Traffic Incidents</h1>
+			</div>
+		</div>
+		
+	<!--
+		Choropleth MAP {BEGIN}
+	-->
+		<div class="visualization" id="visual2">
+			<div class="header2">
+				<h1>Introduction</h1>
+			</div>
+			<div class="description">
+				<h2>Description</h2>
+				<p>Welcome to our analysis of vehicle incidents in New York City. </br>
+				   The dataset we have used can be found <a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95" target="_blank"> here. </a> </br>
+				   There are a lot of attributes in this dataset, but for this analysis we have chosen to filter some of them out. </br>
+				   We have done this, since not all of them are needed for the type of analysis we are doing. </br>
+				   The main areas we are focusing on are the time of the incident, borough, location, people injured or killed, </br>
+				   cause and type of vehicle. </br>
+				   It is possible to see a technical analysis in our iPython notebook which can be found here: <a href="http://nbviewer.jupyter.org/gist/Panzerfury/5a4a4142ff22b7bbd292f8484e9b7e5a" target="_blank">Awsomeness Ahead!</a> </br>
+				</p>
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">The Beginning</span> </p>
+				<p>
+				
+				   Lets dive straight into the analysis and look at the amount of incidents happening in New York City. </br>
+				   Before we proceed it should be noted that the years 2012 and 2016 does not contain data for the entire year. </br>
+				   We have created two <span style="color: green; font-weight: 900;">Histograms</span>, where the one on the left shows all incidents each year in New York City. </br>
+				   The right diagram, shows the amount of incidents each year for a specific borough. </br>
+				   One can change the borough by clicking the checkboxes.
+				</p>
+				<div id="dataset-picker" style="margin-left: 100px;margin-bottom:20px;float:left;">
+					<div class="heatmapButtons" style="padding-left: 60px;">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/hist1.csv';" />
+					</div>
+				</div>
+				<div id="dataset-picker" style="margin-left: 200px;margin-bottom:20px;float:left;">
+					<div class="heatmapButtons" style="padding-left: 60px;">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/hist2.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="hist1" style="float: left; border: 1px solid black; margin: 50px;"></div>
+				<div id="hist2" style="float: left;"></div>
+				<div style="clear: both;"></div>
+				<p>If we look at the diagram on the left, we can see an increasing trend in the amount of incidents in New York City each year. <span style="color: red; font-weight:900;">BUT!</span> remember that 2012 and 2016 is pretty much invalid in this comparison since the incident count for these years are not representing the full year. </br>
+				   If we compare that to the diagram on the right, we can see that Bronx, Brooklyn and Queens have a slight increase, <br/>
+				   whereas Manhattan remains stable. Staten Island however, see a decrease in the amount of incidents. </br> <br/>
+				   As one can also see there is a large difference between some of the boroughs. This is due to the fact, </br>
+				   that a borough like Staten Island is less populated compared to e.g. Manhattan. </br>
+				   An overview of the amount of people living in each borough can be found <a href="http://www1.nyc.gov/site/planning/data-maps/nyc-population/current-future-populations.page" target="_blank"> here. </a>
+				</p>
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">But where are these incidents occuring?!?</span> </p>
+			</div>
+			<div style="clear: both;"></div>
+			<div class="graph">
+				<p>Based on the histograms above we can describe somekind of correlation between the boroughs but not specifically where the incidents occur.</br>
+				   With a <span style="color: green; font-size: 15px; font-weight: 900;">Choropleth Map</span> we can see exactly this! <br/>
+				   The map is divided into New York City zip codes and their respective amount of incidents from 2012 to 2016. </br>
+				   The colors are mapped to a given zip code and the amount of incidents that occur here. 
+				   We have created ranges for each color and these can be derived from our indicator. <span style="color: blue; font-weight: 900;">If one desire to know</span>
+				   the exact amount of incidents, the zip code or the actual name of the post office where the color is mapped to, it can be found by hovering
+				   the mouse over each area.
+				</p>
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/ChoroData.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<div id="svg2"></div>
+				</div>
+			<div style="clear: both;"></div>
+				<p>From the choropleth we can see that there is a concentration of incidents just south of central park in Manhattan. <br/>
+				   There is also a concentration of incidents in Brooklyn. <br/>
+				   It is interesting to see that the incidents are concentrated in these areas. <br/>
+				   It could very well be due to the fact, that these areas are some of the most densely packed in New York City, with narrow roads and a large population. <br/>
+				   These factors will most likely lead to an increase in the number of incidents compared to less densely packed areas.
+				</p>
+			</div>
+		</div>
+	<!--
+		Choropleth {END}
+
+		
+		BUBBLE CHART {BEGIN}
+	-->
+	
+		<div class="visualization" id="visual1">
+			<div class="header2">
+				<h1>Incident Exploration</h1>
+			</div>
+			<div class="description">
+				<h2>Ah.. That is why.</h2>
+				<p>We started out by looking at New York City as a whole. <br/>
+				   Now we are going to explore what some of the reasons for these incident are, as well as trying to figure out if we can find a pattern in our data.</br>
+				   First we are going to look at the specific reasons for these occuring incidents and also look into what type of vehicle is more frequently invovled in accidents.</br>
+				   Then we will move on to look for patterns in hourly time intervals for each borough, </br>
+				   and also look for specific hours where there is a higher injury/kill count.
+				</p>
+			</div>
+			<div class="graph">
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">I want to know more!</span> </p>
+				<p> When discussing incidents in traffic there is a couple of questions which comes to mind: </p>
+				<ul style="    margin-left: 60px;">
+					<li>
+						<span style="font-style: italic; font-size: 14px;">What is the cause of these accidents?</span>
+					</li>
+					<li>
+						<span style="font-style: italic; font-size: 14px;">Which type of vehicle was invovled?</span>
+					</li>
+				</ul>
+				<p>
+					The dataset used to create the diagram below has been divided into boroughs such that one can change inbetween these if desired. <br/>
+					The actual diagram is called a <span style="color: green; font-weight: 900;">Bubble Chart</span> and it answer exactly the two questions metioned above. <br/>
+					When <span style="color: blue;font-weight:bold;">Bubble 1</span> is selected, the diagram illustrates how many accidents there occured by a specific cause. <br/>
+					The bigger the bubble, the more incidents with that cause. <span style="font-weight: 900; color: red;">(To see name of the cause, hover the bubble)</span> 
+					<br/><br/>
+					The other diagram, <span style="color: blue;font-weight:bold;">Bubble 2</span>, is selected by clicking the blue button. <br/>
+					Here we answer question number 2 in the above list, <span style="font-style: italic; font-size: 14px;">Which type of vehicle was invovled?</span>. <br/>
+					Just as with Bubble 1, the bigger the bubble gets, the more incidents occured where that specific vehicle was invovled. <br/>
+					Again, if one wants to see the actual vehicle that was invovled - <span style="font-weight: 900; color: red;">hover the bubble</span>.
+				</p>
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Bubble 1" class="dataset-button" onclick="datasetPicker('ReasonForBubble.csv',0)" />
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/ReasonForBubble.csv';" />
+					</div>
+					<div class="heatmapButtons">
+						<input type="button" value="Bubble 2" class="dataset-button" onclick="datasetPicker('TypeForBubble.csv',0)" />
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/TypeForBubble.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<div id="svg4">
+						<div id="Borough-picker">
+							<form action="">
+							  <label>
+								Bronx
+								<input type="checkbox" name="borough" value="0" checked onclick="boroughPicker(0,1)">
+							  </label>
+							  <label>
+								Brooklyn
+								<input type="checkbox" name="borough" value="1" onclick="boroughPicker(1,1)">
+							  </label>
+							  <label>
+								Staten Island
+								<input type="checkbox" name="borough" value="2" onclick="boroughPicker(2,1)">
+							  </label>							  
+							  <label>
+								Manhattan
+								<input type="checkbox" name="borough" value="3" onclick="boroughPicker(3,1)">
+							  </label>	
+							  <label>
+								Queens
+								<input type="checkbox" name="borough" value="4" onclick="boroughPicker(4,1)">
+							  </label>
+							</form>
+						</div>
+					</div>
+				</div>
+				<p>When looking at the cause for an incident, it is clear that the most common one is <span style="color: red;font-weight: bold;">Driver Inattention</span>. </br>
+				   There could be many reasons for why driver inattention is numero uno of causes. It could be because there is ton of traffic and therefore hard to keep attention of everything around you. <br/> 
+				   The most odd cause that have a high count in Brooklyn, Manhattan and Queens is <span style="color: red;font-weight: bold;">Lost Consciousness</span>. <span style="font-weight: bold;color:black;">How does one lose consciousness while driving?</span>
+				   </br><br/>
+				   Looking at the vehicle type invovled in an accident, the <span style="color: red;font-weight: bold;">Passenger Vehicle</span> has the highest count. </br>
+				   This is not really a surprise, since that is the most common vehicle on the road.
+				</p>
+				
+			</div>
+			
+			<div class="description">
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">What about time?!</span> </p>
+				<p>That is a very good question! And we have, <span style="font-weight:bold;">of course</span>, looked after patterns in the occuring accidents based on time of the day.</br>
+				   In specific we wanted to see if we could figure out at what time there occured most traffic accidents as well as find out if there was a 
+				   specific time interval where people are more likely to get injured/killed in a accident. 
+				   <br/><br/>
+				   The best way - to our knowledge - of finding exactly what we want is to use a <span style="color:green; font-weight: 900;">HeatMap</span>.
+				   <br/>
+				   If <span style="color:blue; font-weight: 900;">Heatmap 1</span> is selected, the diagram illustrate the amount of incidents in each borough per hour basis.</br>
+				   The color of an rectangle will get more blue as the amount of incidents increases. 
+				   <span style="color:black; font-weight:bold;">And if that isnt enough!</span>, one can use the indicator located below the diagram to look up what color maps to what incident amount. </br>
+				   <br/>
+				   If <span style="color:blue; font-weight: 900;">Heatmap 2</span> is selected, the diagram transist into showing the amount of people injured or killed. 
+				   We are actually going as deep as to counting injury/kill count for people in a specific invovlement e.g. "Cyclist Injured".
+				</p>
+			</div>
+			<div class="graph">
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Heatmap 1" class="dataset-button" onclick="heatmapChart('heatmap1.csv', 1)" />
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/heatmap1.csv';" />
+					</div>
+					<div class="heatmapButtons">
+						<input type="button" value="Heatmap 2" class="dataset-button" onclick="heatmapChart('heatmap2.csv', 1)" />
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/heatmap2.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<p style="margin-right: 100px;">Visualizing: <span id="heatmaptTitle">Incident count in a borough at a specific hour or amount of people injured/killed</span></p>
+					<div id="svg1"></div>
+				</div>
+				<p>
+					For <span style="color:blue; font-weight: 900;">Heatmap 1</span> we can see that most incidents happen during daylight. </br>
+					It is mostly concentrated around rush hour which is from 8-10 am and 4-6 pm. </br><br/>
+					
+					For <span style="color:blue; font-weight: 900;">Heatmap 2</span> people are mostly injured compared to killed, and it is again concentrated around rush hour. </br>
+					It's a surprise to see that there are many cyclist involved in these incidents. </br>
+					If one had the time, they could find data about cyclist in New York City and see if there is a correlation with our findings.
+				</p>
+			</div>
+		</div>
+	<!--
+		BUBBLE CHART {END}
+		
+		K-MEANS MAP {BEGIN}
+	-->
+		<div class="visualization" id="visual3">
+			<div class="header2">
+				<h1>Deep Research</h1>
+			</div>
+			<div class="description">
+				<h2>We must dig deeper!</h2>
+				<p>Would it not be fun to look at some interesting incidents? We sure think so. </br>
+				   We have found some incidents that are relevant for your safety! <span style="color: red; font-size: 13px; font-weight: 900;">Alcohol Involvement</span>,
+				   <span style="color: green; font-size: 13px; font-weight: 900;">Turning Improperly</span> and <span style="color: blue; font-size: 13px; font-weight: 900;">Oversized Vehicle</span>.</br>
+				   Why are they interesting one may ask. It would not be fun to get hit by a drunk driver, and <span style="color: red; font-size: 13px; font-weight: 900;">Alcohol Involvement</span> is a serious issue.</br>
+				   It would also not be fun to be stuck in an area where an <span style="color: blue; font-size: 13px; font-weight: 900;">Oversized Vehicle</span> is causing trouble. <br/>
+				   What if people are crashing into you because they are <span style="color: green; font-size: 13px; font-weight: 900;">Turning Improperly</span>? <br/>
+				   Maybe you want to know where these incidents happen and there is no easy way to explain how to find out,<br/>
+				   so bear with us if you don't understand the following: The analysis of this is done with machine learning. More specifically with the use of <span style="color: green; font-size: 13px; font-weight: 900;">K-Means</span> 
+				   and <span style="color: green; font-size: 13px; font-weight: 900;">KNN</span> <br/>
+				   Dear god, what does that mean? If you want to know you can read about the two models: <a href="http://nbviewer.jupyter.org/gist/Panzerfury/5a4a4142ff22b7bbd292f8484e9b7e5a#3.2.2-K-Means-Model" target="_blank">Here for K-Means</a>
+				   and <a href="http://nbviewer.jupyter.org/gist/Panzerfury/5a4a4142ff22b7bbd292f8484e9b7e5a#3.2.1-KNN-Model" target="_blank">Here for KNN</a>. <br/>				   
+				</p>
+			</div>
+			<div class="graph">
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">How many areas are filled with oversized vehicles?</span> </p>
+				<p>It would be nice to know how many concentrated areas one should avoid, if you do not want to get stuck with your oversized vehicle, <br/>
+				   or have someone with a huge vehicle block your way.</br>
+				   To find out how many concentrated areas there are one can look at the map below. <br/>
+				   Changing the k-means will allow one to set the amount of clusters, for the concentrated areas. <br/>
+				   SPOILER! From our research in the python notebook, 4 clusters appears to be an optimal solution to the amount of concetrated areas.
+				</p>
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/KMeansData.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<div id="svg3"></div>
+				</div>
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">I want to know where these three incidents happen!</span> </p>
+				<p>We do too, and we can try to predict it with the <span style="color: green; font-size: 13px; font-weight: 900;">KNN</span> model we have talked about.</br>
+				   Did you notice the colored text for the three incidents? If you did not, go take a look again. Have you looked? Good. </br>
+				   The following map will show where each of the incidents happen, represented with that specific color. <br/>
+				   The prediction work by comparing incidents that happen close to each other. <br/>
+				   You can change the amount of incidents it should compare to, by selecting either 5, 10 or 30. <br/>
+				   We have found that comparing to the 10 closest incidents give a good prediction. Choosing fewer and the prediction will be less accurate, <br/>
+				   and choosing more will not do much, other than have you sit longer and wait for the prediction to finish. <br/>
+				   Naturally there is no difference in the time you have to wait on this web page! But know that there is a difference when you have to do the work behind the scenes.
+				</p>
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/KNNDataXS.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<div id="svg5"></div>
+				</div>
+			</div>
+		</div>
+	<!--
+		K-MEANS MAP {END}
+		
+	-->
+		<div class="visualization" id="visual4">
+			<div class="header2">
+				<h1>Extra</h1>
+			</div>
+			<div class="description">
+				<h2>There is more?</h2>
+				<p>YES! There is more, and we thought it would be fun to do some extra visualizations, so that you really know what is going on in New York City. </br>
+				   First we are going to have a quick look at some of the most dangerous roads pertaining to specific incident types. </br>
+				   Then we are moving on to another predictor that we have created with a machine learning model. What? More machine learning? Yes, </br>
+				   and this time it is a <span style="color: green; font-size: 13px; font-weight: 900;">Decision-Tree</span>, which you can read about in detail <a href="http://nbviewer.jupyter.org/gist/Panzerfury/5a4a4142ff22b7bbd292f8484e9b7e5a#3.2.3-Decision-Tree" target="_blank">right here</a>. <br/>
+				   Finally we will end it all with a tree representation of the incident count for a specific vehicle type in a borough. Woah, that sounded weird. Not to worry, all will be clear.
+				</p>
+			</div>
+			<div class="graph">
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">Stay away from these intersections!</span> </p>
+				<p>
+				We are fireing our funny <span style="font-weight: 900;font-size: 18px;color: green;">Extra!</span> section of with some images of the most fatal and dangerous corners/street names of New York City. <br/>
+				The first two images show that the incident reason <span style="font-style: italic;">Driver Inattention</span> there is a specific corner which you should avoid. <br/>
+				Namely the corner at: 2 Delancey St, New York, NY 10002, USA. <span style="color: red">!</span> <br/>
+				The image on the left tells us that there is exactly <span style="font-size: 16px; font-weight: 900;">126</span> <span style="font-style: italic;">Driver Inattention</span>  incidents at that exact location. <br/>
+				And the image on the right is taken from google maps based on the address mentioned.
+				</p>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<img src="Images/inattentionMost.png" />
+					<img src="Images/inattentionMostPicture.png" />
+				</div>
+				<p style="margin-bottom: 20px;margin-top: 20px;">
+				Another example of a streetcorner one should avoid is located at: 180 12th Ave, New York, NY 10036, USA. <br/>
+				At this location there occured exactly <span style="font-size: 16px; font-weight: 900;">45</span> <span style="font-style: italic;">Turning Improperly</span>  incidents <span style="color: red">!</span> <br/>
+				One can also derive, from the image on the left, that around that area of the city there is a quit high amount of <span style="font-style: italic;">Turning Improperly</span> incidents. <br/>
+				Just as with <span style="font-style: italic;">Driver Inattention</span>  we included an image of the exact corner where the 45 incidents happened.
+				</p>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<img src="Images/mostDangerousRoadTurning.png" />
+					<img src="Images/mostDangerousRoad.png" />
+				</div>
+			</div>
+			<div class="graph">
+				<p> <br/> <span style="font-weight: 900; font-size: 18px; color: black;">Woah. Can you see into the future?</span> </p>
+				<p> Unfortunately we cannot see into the future. But with the power of advanced algorithms we can predict it.<br/>
+				    We already told you where to read more, so feel free to do so. <br/>
+					There are two types of things you can predict with these fun interactive predictors. <br/>
+					First you want to know in which borough an incident happen based on the time, right? You can do just that! <br/>
+					Select an incident type and a time, then sit back and watch as the magic happens. Or, atleast an approximation of magic. <br/>
+					Truth be told, it only has an accuracy of around 38%. <br/>
+				</p>
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/PredictBoroughData.csv';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<div id="prediction" style="width: 900px;border: 1px solid black; margin: 50px;"></div>
+					
+					<div style="text-align: left; margin-top: 20px; margin-bottom: 20px;">
+						<p>Maybe you really want to know when an incident happens in a given borough? We can do that too! <br/>
+						   The second predictor will tell you a time if you give it an incident type and a borough. So awesome! <br/>
+						   Do not trust it too much though. It is right 35% of the time.
+						</p>
+					</div>
+					
+					<div id="dataset-picker" style="text-align: center;">
+						<div class="heatmapButtons">
+							<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/PredictTimeData.csv';" />
+						</div>
+					</div>
+		
+					<div id="prediction2" style="width: 900px;border: 1px solid black; margin: 50px;"></div>
+				</div>
+			</div>
+			<div class="graph">
+				<p> <span style="font-weight: 900; font-size: 18px; color: black;">Are we there yet?</span> </p>
+				<p>We are almost at the point where you now know everything about incidents in New York City</br>
+				   We just want to show you a little interactive tree, where you can check out how many of a given vehicle is involved in an incident at a certain time.</br>
+				   Oh, and it is also for a borough. </br>
+				   CAUTION: Do not expand too many nodes at once, or it will be impossible to see anything on the tree.
+				</p>
+				<div id="dataset-picker" style="text-align: center;">
+					<div class="heatmapButtons">
+						<input type="button" value="Download Dataset" class="download-button" onclick="location.href='http://andaweb.dk/Data/Project/ForceGraphData.json';" />
+					</div>
+				</div>
+				<div style="clear: both;"></div>
+				<div id="center" style="text-align: center;margin-top: 20px;">
+					<div id="svg6"></div>
+				</div>
+			</div>
+		</div>
+	
+	<script type="text/javascript" src="Scripts/histograms.js"></script>
+	<script type="text/javascript" src="Scripts/heatmap.js"></script>
+	<script type="text/javascript" src="Scripts/choropleth.js"></script> 
+	<script type="text/javascript" src="Scripts/kmeans.js"></script> 
+	<script type="text/javascript" src="Scripts/knn.js"></script>
+	<script type="text/javascript" src="Scripts/bubblechart.js"></script> 
+	<script type="text/javascript" src="Scripts/forceGraph.js"></script>
+	<script type="text/javascript" src="Scripts/predictions.js"></script>
+	
+	<script>
+		$("input:checkbox").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+			var group = "input:checkbox[name='" + $box.attr("name") + "']"
+			$(group).prop("checked", false);
+			$box.prop("checked", true);
+		  } else {
+			$box.prop("checked", true);
+		  }
+		});
+	</script>
+	<script type="text/javascript">
+		$("#nav1").click(function(){ $('html, body').animate({ scrollTop: $('#visual1').offset().top }, 'slow'); });
+		$("#nav2").click(function(){ $('html, body').animate({ scrollTop: $('#visual2').offset().top }, 'slow'); });
+		$("#nav3").click(function(){ $('html, body').animate({ scrollTop: $('#visual3').offset().top }, 'slow'); });
+		$("#nav4").click(function(){ $('html, body').animate({ scrollTop: $('#visual4').offset().top }, 'slow'); });
+	</script>
+</body>
+</html>

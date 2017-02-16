@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Social Data - Project</title>
+	<link href="CSS/styleProject.css" rel="stylesheet" />
+	<link href="CSS/bootstrap.min.css" rel="stylesheet" />
+	<script type="text/javascript" src="d3/d3.min.js"></script>
+	<script type="text/javascript" src="d3/queue.v1.min.js"></script>
+	<script type="text/javascript" src="Scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="Scripts/cssrefresher.js"></script>
+	<style>
+		.dropdown {
+			border: none;
+		}
+		label.dropdown select {
+			padding: 10px 42px 10px 10px;
+			background: #f8f8f8;
+			color: #444;
+			border: 1px solid #aaa;
+			border-radius: 0;
+			display: inline-block;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			cursor: pointer;
+			outline: none;
+		}
+		label.dropdown select:-moz-focusring {
+			color: transparent;
+			text-shadow: 0 0 0 #444;
+		}
+		label.dropdown select::-ms-expand {
+			display: none;
+		}
+		label.dropdown:before {
+			content: '';
+			right: 5px;
+			top: 4px;
+			width: 30px;
+			height: 33px;
+			background: #f8f8f8;
+			position: absolute;
+			pointer-events: none;
+			display: block;
+		}
+		label.dropdown { position: relative; }
+		label.dropdown:after {
+			content: '>';
+			font: 16px Consolas, monospace;
+			color: #444;
+			-webkit-transform: rotate(90deg);
+			-moz-transform: rotate(90deg);
+			-ms-transform: rotate(90deg);
+			transform: rotate(90deg);
+			right: 2px;
+			top: 10px;
+			border-bottom: 1px solid #aaa;
+			position: absolute;
+			pointer-events: none;
+			width: 35px;
+			padding: 0 0 5px 0;
+			text-indent: 14px;
+		}
+		@media screen\0 {
+			label.dropdown:after {
+				width: 38px;
+				text-indent: 15px;
+				right: 0;
+			}
+		}
+		@media screen and (min--moz-device-pixel-ratio:0) {
+			label.dropdown select { padding-right: 40px; }
+			label.dropdown:before { right: 6px; }
+			label.dropdown:after {
+				text-indent: 14px;
+				right: 6px;
+				top: 8px;
+				width: 36px;
+			}
+		}
+		
+		.button {
+		height: 40px;
+		   border-top: 1px solid #96d1f8;
+		   background: #65a9d7;
+		   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+		   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+		   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+		   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+		   background: -o-linear-gradient(top, #3e779d, #65a9d7);
+		   padding: 8.5px 17px;
+		   -webkit-border-radius: 8px;
+		   -moz-border-radius: 8px;
+		   border-radius: 8px;
+		   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+		   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+		   box-shadow: rgba(0,0,0,1) 0 1px 0;
+		   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+		   color: white;
+		   font-size: 16px;
+		   font-family: Georgia, serif;
+		   text-decoration: none;
+		   vertical-align: middle;
+		   }
+		.button:hover {
+		   border-top-color: #28597a;
+		   background: #28597a;
+		   color: #ccc;
+		   }
+		.button:active {
+		   border-top-color: #1b435e;
+		   background: #1b435e;
+		   }
+		   
+		#resultBorough {
+		    float: right;
+			opacity: 1;
+			margin-right: 100px;
+			margin-top: 8px;
+			border: 2px solid slategray;
+			padding: 20px;
+			font-weight: 800;
+			text-align: center;
+			background-color: rgba(53, 255, 37, 0.43);
+		}
+	</style>
+</head>
+<body>	
+	<div id="prediction" style="width: 900px;border: 1px solid black; margin: 50px;"></div>
+	<div id="prediction2" style="width: 900px;border: 1px solid black; margin: 50px;"></div>
+	
+	<script>			
+		d3.csv("Data/Project/PredictTimeData.csv", function(data) {
+		
+			dataset2 = data.map(function(d) {
+				return [d["CONTRIBUTINGFACTORVEHICLE1"], d["BOROUGH"]];
+			});
+			
+			var key = d3.select("#prediction2")
+					    .selectAll("select")
+					    .data([[0],[1]])
+					    .enter()
+						.append("label")
+						.attr("class", "dropdown")
+					    .append("select")
+						.attr("class", function (d){ return "selectTime" + d;})
+						.attr("id", function (d){ return "selector" + d;});
+			
+			console.log(dataset2);
+			
+			d3.select(".selectTime0").selectAll("option")
+				.data(d3.map(data, function(d){return d.CONTRIBUTINGFACTORVEHICLE1;}).keys())
+				.enter()
+				.append("option")
+				.text(function(d){return d;})
+				.attr("value",function(d){return d;});
+			
+			d3.select(".selectTime1").selectAll("option")
+				.data(d3.map(data, function(d){return d.BOROUGH;}).keys())
+				.enter()
+				.append("option")
+				.text(function(d){return d;})
+				.attr("value", function(d){return d;});
+			
+			var button = d3.select("#prediction2")
+						   .append("button")
+						   .attr("class", "button")
+						   .attr("onclick", "getPredictionTime()")
+						   .text("Predict Time!");
+		});
+		
+		var resultField2 = d3.select("#prediction2")
+							.append("input")
+							.attr("type", "text")
+							.attr("id", "resultBorough")
+							.attr("readonly", "readonly")
+							.attr("value", "Placeholder")
+							.style("float", "right");
+		
+		var getPredictionTime = function(){
+			var option1 = document.getElementById('selector0').value;
+			var option2 = document.getElementById('selector1').value;
+			
+			d3.csv("Data/Project/PredictTimeData.csv", function(data) {
+				
+				console.log(option1);
+				console.log(option2);
+				dataset2 = data.filter(function(d) {
+						console.log(d);
+						return (d["BOROUGH"] == option2 && d["CONTRIBUTINGFACTORVEHICLE1"] == option1);
+				});
+				
+				console.log(dataset2);
+				
+				resultField2.style('opacity', 0)
+						   .transition()
+						   .duration(700)
+						   .style('opacity', 1).attr('value', dataset2[0].TIME_PREDICTION + ":00");
+			});
+		};	
+	</script>
+	
+	<script>			
+		d3.csv("Data/Project/PredictBoroughData.csv", function(data) {
+		
+			dataset = data.map(function(d) {
+				return [d["CONTRIBUTINGFACTORVEHICLE1"], +d["TIME"]];
+			});
+			
+			var key = d3.select("#prediction")
+					    .selectAll("select")
+					    .data([[0],[1]])
+					    .enter()
+						.append("label")
+						.attr("class", "dropdown")
+					    .append("select")
+						.attr("class", function (d){ return "selectBorough" + d;})
+						.attr("id", function (d){ return "select" + d;});
+			
+			d3.select(".selectBorough0").selectAll("option")
+				.data(d3.map(data, function(d){return d.CONTRIBUTINGFACTORVEHICLE1;}).keys())
+				.enter()
+				.append("option")
+				.text(function(d){return d;})
+				.attr("value",function(d){return d;});
+			
+			d3.select(".selectBorough1").selectAll("option")
+				.data(data.sort(function(a,b) {return +a.TIME - +b.TIME;}))
+				.data(d3.map(data, function(d){return d.TIME;}).keys())
+				.enter()
+				.append("option")
+				.text(function(d){return d + ":00";})
+				.attr("value",function(d){return d;});
+			
+			var button = d3.select("#prediction")
+						   .append("button")
+						   .attr("class", "button")
+						   .attr("onclick", "getPredictionBorough()")
+						   .text("Predict Borough!");
+		});
+		
+		var resultField = d3.select("#prediction")
+							.append("input")
+							.attr("type", "text")
+							.attr("id", "resultBorough")
+							.attr("readonly", "readonly")
+							.attr("value", "Placeholder")
+							.style("float", "right");
+		
+		var getPredictionBorough = function(){
+			var option1 = document.getElementById('select0').value;
+			var option2 = document.getElementById('select1').value;
+			
+			d3.csv("Data/Project/PredictBoroughData.csv", function(data) {
+				
+				dataset = data.filter(function(d) {
+						return (+d["TIME"] == option2 && d["CONTRIBUTINGFACTORVEHICLE1"] == option1);
+				});
+				
+				
+				resultField.style('opacity', 0)
+						   .transition()
+						   .duration(700)
+						   .style('opacity', 1).attr('value', dataset[0].PREDICTION);
+			});
+		};	
+	</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Week 7 - Social Data</title>
+		<script type="text/javascript" src="d3/d3.min.js"></script>
+			<link href="CSS/style.css" rel="stylesheet" />
+			<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+			<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="col-md-2" data-spy="affix"  id="container" style="background-color: teal;">
+			<div id="header" style="text-align:center">
+				<img src="logo.png" style="width: 170px;height: 170px;margin-bottom: 10px;" />
+				<h3>Social Data - 2016</h3>
+			</div>
+			<div id="body">
+				<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav6">Week 6</button>
+				<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav7">Week 7</button>
+				<button type="button" class="btn btn-primary btn-block" class="nav_button" id="nav8">Week 8</button>
+			</div>
+			<div id="footer">
+				<p style="font-size: 20px;margin: 0;">Developed by: <br/> <span id="name">Nicolai Dahl, s113411</span> <br/> <span id="name">Christian Andersern, s113990</span>
+			</div>
+		</div>
+	
+		<div class="col-md-10" style="float: right;">
+			<div class="visualization">
+				<div class="header">
+					<h1>Header summarizing visualization 1</h1>
+				</div>
+
+				<div class="description">
+					<h2>Description of visualization 1</h2>
+					<p>Text describing visualization 1. Assume that the reader hasn't read this exercise.</p>
+				</div>
+
+				<div class="graph">
+					<h2>Visualization 1</h2>
+					<p id="dataTitle">Current Dataset: <span id="idYear">2003</span></p>
+					<div id="scatter1"></div>
+				</div>
+			</div>
+
+			<div class="visualization">
+				<div class="header">
+					<h1>Header summarizing visualization 2</h1>
+				</div>
+
+				<div class="description">
+					<h2>Description of visualization 2</h2>
+					<p>Text describing visualization 2. Assume that the reader hasn't read this exercise.</p>
+				</div>
+
+				<div class="graph">
+					<h2>Visualization 2</h2>
+					<p id="categoryTitle">VEHICLE THEFT</p>
+					<div id="scatter2"></div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="Scripts/week7_plot1.js"></script>
+		<script type="text/javascript" src="Scripts/week7_plot2.js"></script>
+		<script type="text/javascript" src="Scripts/navigationButtons.js"></script>
+	</body>
+</html>

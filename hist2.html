@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Social Data - Project</title>
+	<link href="CSS/styleProject.css" rel="stylesheet" />
+	<link href="CSS/bootstrap.min.css" rel="stylesheet" />
+	<script type="text/javascript" src="d3/d3.min.js"></script>
+	<script type="text/javascript" src="d3/queue.v1.min.js"></script>
+	<script type="text/javascript" src="d3/d3tip.js"></script>
+	<script type="text/javascript" src="Scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="Scripts/cssrefresher.js"></script>
+</head>
+<body>
+	
+	<div id="hist1" style="float: left; border: 1px solid black; margin: 50px;"></div>
+	<div id="hist2" style="float: left; border: 1px solid black; margin: 50px;"></div>
+	<script>
+		// Creating radio buttons
+		var shapeDataHist = ["BRONX", "BROOKLYN", "STATEN ISLAND", "MANHATTAN", "QUEENS"], j = 0;  // Choose K=2 as default
+		var maxY = 0;
+
+		// Create the shape selectors
+		var formHist = d3.select("#hist2").append("form");
+		labels = formHist.selectAll("label")
+					 .data(shapeDataHist)
+					 .enter()
+					 .append("label")
+					 .text(function(d) {return d;})
+					 .insert("input")
+					 .attr({
+						 type: "checkbox",
+						 class: "shape",
+						 name: "Hist",
+						 onclick: function(d,i ) { return "changeN("+i+",1)"; }
+					 })
+					 .property("checked", function(d, i) {return i===j;});
+	
+		//Margin, Width and height   
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+			width = 350 - margin.left - margin.right,
+			height = 200 - margin.top - margin.bottom;
+		
+		//Create SVG element
+		var histSvg1 = d3.select("#hist1").append("svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+						.append("g")
+						.attr("transform", "translate(" + (margin.left+10) + "," + margin.top + ")");
+		
+		//Create SVG element
+		var histSvg2 = d3.select("#hist2").append("svg")
+				.attr("width", (width + margin.left + margin.right) + 150)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + (margin.left+10) + "," + margin.top + ")");
+				
+		var x = d3.scale.ordinal()
+				  .rangeRoundBands([0, width], .1);
+				  
+		var x2 = d3.scale.ordinal()
+				  .rangeRoundBands([0, width + 150], .1);
+				  
+		var xAxis2 = d3.svg.axis()
+			.scale(x2)
+			.orient("bottom");	
+			
+		var y = d3.scale.linear()
+				.range([height, 0]);			
+		
+		var xAxis = d3.svg.axis()
+			.scale(x)
+			.orient("bottom");
+			
+		var yAxis = d3.svg.axis()
+			.scale(y)
+			.orient("left")
+			.ticks(10);
+				
+		d3.csv("Data/Project/hist1.csv", function(data) {
+			dataset = data.map(function(d) {
+				return [+d["Year"], +d["Count"]];
+			});
+		
+			x.domain(data.map(function(d) { return d["Year"]; }));
+			y.domain([0, d3.max(data, function(d) { return d.Count; })]);
+			
+			histSvg1.append("g")
+				  .attr("class", "x axis")
+				  .attr("transform", "translate(0," + height + ")")
+				  .call(xAxis);
+
+			histSvg1.append("g")
+				  .attr("class", "y axis")
+				  .call(yAxis)
+				  .append("text")
+				  .attr("transform", "rotate(-90)")
+				  .attr("y", 6)
+				  .attr("dy", ".71em")
+				  .style("text-anchor", "end")
+				  .text("Incidents");
+
+			histSvg1.append("g")
+				  .attr("class", "bars").selectAll(".bar")
+				  .data(data)
+				  .enter().append("rect")
+				  .attr("class", "bar")
+				  .attr("x", function(d) { return x(d["Year"]); })
+				  .attr("width", x.rangeBand())
+				  .attr("y", function(d) { return y(d.Count); })
+				  .attr("height", function(d) { return height - y(d.Count); });
+				  
+			//Create labels
+			histSvg1.append("g")
+				.attr("class", "valueText").selectAll(".label")
+				.data(data)
+				.enter()
+				.append("text")
+				.text(function(d) { return d.Count; })
+				.attr("text-anchor", "middle")
+				.attr("x", function(d, i) { return x(d["Year"]) + x.rangeBand() / 2; })
+				.attr("y", function(d) { return y(d.Count) - 7; })
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "11px")
+				.attr("fill", "red");
+			
+		});
+		
+		function changeN(ix, num) {
+			
+			d3.csv("Data/Project/hist2.csv", function(data) {
+					var datasetHist2 = data.map(function(d) { return [d["Borough"], +d["Year"], +d["Count"]]; } );
+
+					var bName = shapeDataHist[ix];
+					
+					var data = datasetHist2.filter(function(row) {
+						return row[0] == bName;
+					});		
+					
+					datasetHist2.forEach(function(dataArray) {
+						if (maxY < dataArray[2]) {
+							maxY = dataArray[2];
+						}
+					});
+						
+					x2.domain(data.map(function(d) { return d[1]; }));
+					y.domain([0, maxY]);
+					
+					if (num == 0) {			
+						histSvg2.append("g")
+							  .attr("class", "x axis")
+							  .attr("transform", "translate(0," + height + ")")
+							  .call(xAxis2);
+
+						histSvg2.append("g")
+							  .attr("class", "y axis")
+							  .call(yAxis)
+							  .append("text")
+							  .attr("transform", "rotate(-90)")
+							  .attr("y", 6)
+							  .attr("dy", ".71em")
+							  .style("text-anchor", "end")
+							  .text("Incidents");
+					
+						//Create bars
+						histSvg2.selectAll("rect")
+							.data(data)
+							.enter()
+							.append("rect")
+							.attr("x", function(d) { return x2(d[1]); })
+							.attr("width", x2.rangeBand())
+							.attr("y", function(d) { return y(d[2]); })
+							.attr("height", function(d) { return height - y(d[2]); })
+							.attr("fill", function(d) {
+								return "rgb(0, 0, " + (Math.floor(y(d[2]))) + ")";
+							});
+
+						//Create labels
+						histSvg2.selectAll("text.labels")
+							.data(data)
+							.enter()
+							.append("text")
+							.text(function(d) { return d[2]; })
+							.attr("class", "valueLabel")
+							.attr("text-anchor", "middle")
+							.attr("x", function(d, i) { return x2(d[1]) + x2.rangeBand() / 2; })
+							.attr("y", function(d) { return y(d[2]) - 7; })
+							.attr("font-family", "sans-serif")
+							.attr("font-size", "11px")
+							.attr("fill", "red");							
+					} else {
+						//Update all rects
+						histSvg2.selectAll("rect")
+							.data(data)
+							.transition()
+							.delay(function(d, i) { return i / data.length * 1000; })
+							.duration(500)
+							.attr("y", function(d) { return y(d[2]); })
+							.attr("height", function(d) { return height - y(d[2]); })
+							.attr("fill", function(d) {
+								return "rgb(0, 0, " + (Math.floor(y(d[2]))) + ")";
+							});
+
+						//Update all labels
+						histSvg2.selectAll("text.valueLabel")
+							.data(data)
+							.transition()
+							.delay(function(d, i) { return i / data.length * 1000; })
+							.duration(500)
+							.text(function(d) { return d[2]; })
+							.attr("y", function(d) { return y(d[2]) - 7; });
+					}							
+			});
+		};
+		
+		changeN(0,0);
+		
+	</script>
+	
+	<script>
+		$("input:checkbox").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+			var group = "input:checkbox[name='" + $box.attr("name") + "']"
+			$(group).prop("checked", false);
+			$box.prop("checked", true);
+		  } else {
+			$box.prop("checked", true);
+		  }
+		});
+	</script>
+	<script type="text/javascript">
+		$("#nav1").click(function(){ $('html, body').animate({ scrollTop: $('#visual1').offset().top }, 'slow'); });
+		$("#nav2").click(function(){ $('html, body').animate({ scrollTop: $('#visual2').offset().top }, 'slow'); });
+		$("#nav3").click(function(){ $('html, body').animate({ scrollTop: $('#visual3').offset().top }, 'slow'); });
+		$("#nav4").click(function(){ $('html, body').animate({ scrollTop: $('#visual4').offset().top }, 'slow'); });
+	</script>
+</body>
+</html>
